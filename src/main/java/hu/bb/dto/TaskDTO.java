@@ -21,5 +21,6 @@ public class TaskDTO {
     private String title;
     private String description;
     private Boolean complated;
+    private String priority;
     private Date dueDate;
 }

@@ -36,6 +36,9 @@ public class Task {
     private Boolean complated;
 
     @Column(nullable=false)
+    private String priority;
+
+    @Column(nullable=false)
     private Date dueDate;
 
     @Column(nullable=false)

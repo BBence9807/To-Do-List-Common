@@ -21,6 +21,7 @@ public class TaskMapperImpl implements TaskMapper{
             .userId(taskDTO.getUserId())
             .title(taskDTO.getTitle())
             .description(taskDTO.getDescription())
+            .priority(taskDTO.getPriority())
             .complated(taskDTO.getComplated())
             .dueDate(taskDTO.getDueDate())
             .build();
@@ -36,6 +37,7 @@ public class TaskMapperImpl implements TaskMapper{
             .userId(task.getUserId())
             .title(task.getTitle())
             .description(task.getDescription())
+            .priority(task.getPriority())
             .complated(task.getComplated())
             .dueDate(task.getDueDate())
             .build();
