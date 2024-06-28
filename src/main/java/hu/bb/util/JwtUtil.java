@@ -8,54 +8,45 @@ import javax.crypto.SecretKey;
 
 import org.springframework.stereotype.Component;
 
-import hu.bb.configuration.JwtConfiguration;
 import hu.bb.entity.User;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtil {
 
-    private JwtConfiguration jwtConfiguration;
+    private static final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static final long EXPIRATION_TIME = 86400000;
 
-    public JwtUtil(JwtConfiguration jwtConfiguration) {
-        this.jwtConfiguration = jwtConfiguration;
-    }
-
-
+  
     public String generateToken(User user) {
         return Jwts.builder()
-            .subject(user.getUsername())
-            .claims(generateClaims(user))
-            .expiration(new Date(System.currentTimeMillis() + jwtConfiguration.getExpire()))
-            .signWith(getSigningKey())
-            .compact();
+                .setClaims(generateClaims(user))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(key)
+                .compact();
     }
 
 
     public String extractUsername(String token) {
-        return Jwts.parser()
-            .decryptWith(getSigningKey())
-            .build()
-            .parseUnsecuredClaims(token)
-            .getPayload()
-            .getSubject();
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody().get("username").toString();
     }
 
 
     private Map<String, String> generateClaims(User user){
         Map<String, String> claims = new HashMap<>();
 
+        claims.put("username", user.getUsername());
         claims.put("email", user.getEmail());
         claims.put("id", user.getId().toString());
         claims.put("notificationType", user.getNotificationType());
 
         return claims;
-    }
-
-    private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtConfiguration.getKey());
-        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

@@ -1,4 +1,4 @@
-package hu.bb;
+package hu.bb.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import hu.bb.dto.UserDTO;
 import hu.bb.entity.User;
-import hu.bb.mapper.UserMapperImpl;
 
 class UserMapperImplTest {
 

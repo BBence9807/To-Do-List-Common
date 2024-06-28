@@ -1,4 +1,6 @@
-package hu.bb;
+package hu.bb.mapper;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Date;
 import java.util.UUID;
@@ -10,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import hu.bb.constants.TaskPriority;
 import hu.bb.dto.TaskDTO;
 import hu.bb.entity.Task;
-import hu.bb.mapper.TaskMapperImpl;
 
 class TaskMapperImplTest {
 
@@ -56,13 +57,17 @@ class TaskMapperImplTest {
     }
 
     @Test
-    void toUserTest(){
-      
+    void toTaskTest(){
+        Task createdTask = taskMapperImpl.toTask(taskDTO);
+
+        assertEquals(createdTask.getTitle(), taskDTO.getTitle());
     }
 
     @Test
-    void toUserDTOTest(){
-       
+    void toTaskDTOTest(){
+        TaskDTO createdTaskDTO = taskMapperImpl.toTaskDto(task);
+
+        assertEquals(createdTaskDTO.getTitle(), task.getTitle());
     }
 
 }
